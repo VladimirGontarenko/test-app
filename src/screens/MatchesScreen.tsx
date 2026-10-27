@@ -130,9 +130,20 @@ export function MatchesScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Матчи тура</Text>
-        <UpdatedAgo since={lastUpdated} />
+       <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <Text style={styles.title}>Матчи тура</Text>
+          <UpdatedAgo since={lastUpdated} />
+        </View>
+        <Pressable
+          style={[styles.refreshBtn, refreshing && styles.refreshBtnDisabled]}
+          onPress={refresh}
+          disabled={refreshing}
+        >
+          <Text style={styles.refreshText}>
+            {refreshing ? '...' : 'Обновить'}
+          </Text>
+        </Pressable>
       </View>
 
       <View style={styles.filters}>
@@ -193,8 +204,26 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'baseline',
+    alignItems: 'center',
     marginBottom: 12,
+  },
+  headerLeft: {
+    flex: 1,
+  },
+  refreshBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: '#111827',
+    marginLeft: 8,
+  },
+  refreshBtnDisabled: {
+    opacity: 0.5,
+  },
+  refreshText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 13,
   },
   title: { fontSize: 24, fontWeight: '700' },
   filters: { flexDirection: 'row', gap: 8, marginBottom: 12 },

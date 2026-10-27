@@ -11,10 +11,13 @@ export function UpdatedAgo({ since }: Props) {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    setInterval(() => {
-      setSeconds(seconds + 1);
-    }, 1000);
-  }, []);
+    const update = () =>
+      setSeconds(Math.max(0, Math.floor((Date.now() - since.getTime()) / 1000)));
+
+    update(); // сразу правильное значение, без мигания «0» при since в прошлом
+    const id = setInterval(update, 1000);
+    return () => clearInterval(id); // очистка при размонтировании / смене since
+  }, [since]);
 
   return <Text style={styles.text}>Обновлено {seconds} сек назад</Text>;
 }
